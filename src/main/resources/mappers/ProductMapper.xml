@@ -176,4 +176,26 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="selectList" resultMap="BaseResultMap">
+    SELECT 
+    <include refid="Base_Column_List"/>
+    FROM mmall_product
+    ORDER BY id /*这里不能要分号，在PageHelper在进行分页是会有limit 0 offset 10，加分号会导致语法错误。*/
+  </select>
+
+  <select id="selectByNameAndProductId" resultMap="BaseResultMap" parameterType="map">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM mmall_product
+    /*使用where标签是把第一个and关键字替换为where*/
+    <where>
+      <if test="productName != null">
+        AND name = #{productName}
+      </if>
+      <if test="productId != null">
+        AND id = #{productId}
+      </if>
+    </where>
+  </select>
 </mapper>

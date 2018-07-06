@@ -151,4 +151,60 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="checkUsername" resultType="int" parameterType="String" >
+    select count(1) from mmall_user
+    where username = #{username}
+    /*用#防止sql注入*/
+  </select>
+
+  <select id="checkEmail" resultType="int" parameterType="String" >
+    select count(1) from mmall_user
+    where email = #{email}
+    /*用#防止sql注入*/
+  </select>
+
+  <!--parameterType="map" 这里的map是java.util.Map的缩写，mybatis会自动转换为对应的-->
+  <select id="selectLogin" resultMap="BaseResultMap" parameterType="map" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM mmall_user
+    WHERE username = #{username}
+    AND password = #{password}
+  </select>
+  
+  <select id="selectQuestionByUsername" resultType="String" parameterType="String" >
+    SELECT
+    question
+    from mmall_user
+    WHERE username = #{username}
+  </select>
+
+  <select id="checkAnswer" resultType="int" parameterType="map" >
+    SELECT
+    COUNT(1)
+    FROM mmall_user
+    WHERE username = #{username}
+    AND question = #{question}
+    AND  answer = #{answer}
+  </select>
+
+  <update id="updatePasswordByUsername" parameterType="map" >
+    UPDATE mmall_user
+    SET password = #{passwordNew}, update_time = now()
+    WHERE username = #{username}
+  </update>
+
+  <select id="checkPassword" resultType="int" parameterType="map" >
+    SELECT
+    count(1)
+    FROM mmall_user
+    WHERE id = #{userId}
+    AND  password = #{password}
+  </select>
+
+  <select id="checkEmailByUserId" resultType="int" parameterType="map" >
+    SELECT count(1) from mmall_user
+    WHERE email = #{email}
+    AND id != #{userId}
+  </select>
 </mapper>
