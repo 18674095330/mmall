@@ -31,7 +31,7 @@ public class FTPUtil {
 
     public static boolean uploadFile(List<File> fileList){
         FTPUtil ftpUtil = new FTPUtil(ftpIp, 21, ftpUser, ftpPass);
-        return false;
+        return true;
     }
 
     private boolean uploadFile(String remotePath, List<File> fileList) throws IOException {
