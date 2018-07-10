@@ -1,5 +1,6 @@
 package com.mmall.util;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.net.ftp.FTPClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,9 +31,12 @@ public class FTPUtil {
         this.pwd = pwd;
     }
 
-    public static boolean uploadFile(List<File> fileList){
+    public static boolean uploadFile(List<File> fileList) throws IOException {
         FTPUtil ftpUtil = new FTPUtil(ftpIp, 21, ftpUser, ftpPass);
-        return true;
+        logger.info("开始连接ftp服务器");
+        boolean result = ftpUtil.uploadFile("img", fileList);
+        logger.info("开始连接ftp服务器，结束上传，上传结果：{}");
+        return result;
     }
 
     private boolean uploadFile(String remotePath, List<File> fileList) throws IOException {
@@ -121,4 +126,8 @@ public class FTPUtil {
     }
 
 
+/*    public static void main(String[] args) {
+        String date = DateFormatUtils.format(new Date(), "yyMMddSSSmmssHH");
+        System.out.println(date);
+    }*/
 }
