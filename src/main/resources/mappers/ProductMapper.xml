@@ -172,7 +172,6 @@
       price = #{price,jdbcType=DECIMAL},
       stock = #{stock,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -191,11 +190,27 @@
     /*使用where标签是把第一个and关键字替换为where*/
     <where>
       <if test="productName != null">
-        AND name = #{productName}
+        AND name LIKE #{productName}
       </if>
       <if test="productId != null">
         AND id = #{productId}
       </if>
     </where>
+  </select>
+  
+  <select id="selectByNameAndCategoryIds" resultMap="BaseResultMap" parameterType="map">
+    SELECT
+    <include refid="Base_Column_List"></include>
+    FROM mmall_product
+    WHERE status = 1
+    <if test="productName != null">
+      AND name like #{productName}
+    </if>
+    <if test="categoryIdList != null">
+      AND category_id IN 
+      <foreach item="item" index="index" open="(" separator="," close=")" collection="categoryIdList">
+        #{item}
+      </foreach>
+    </if>
   </select>
 </mapper>
